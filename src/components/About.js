@@ -1,6 +1,8 @@
 import React from 'react';
 import './about.css';
 
+// https://testing-playground.com/
+
 const About = () => (
   <section>
     <h2>{ `About Pokédex` }</h2>

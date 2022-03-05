@@ -1,24 +1,34 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { createMemoryHistory } from 'history';
+// import userEvent from '@testing-library/user-event';
 import App from '../App';
 
-describe('Teste o componente <About.js />', () => {
-  it('Teste se a página contém as informações sobre a Pokédex.', async () => {
+describe('Teste o componente <NotFound.js />', () => {
+  it('Teste se pág contém um h2 com o texto Page requested not found 😭.', async () => {
+    // https://testing-library.com/docs/example-react-router/
+    const history = createMemoryHistory();
+    history.push('/some/bad/route');
     render(
-      <BrowserRouter>
+      <Router history={ history }>
         <App />
-      </BrowserRouter>,
+      </Router>,
     );
-    // valores entre / algumaCoisa /i ignoram letras maiúsculas ou minúsculas
-    const aboutLink = screen.getByText(/About/i);
-    expect(aboutLink).toBeDefined();
+    expect(screen.getByText(/Page requested not found/i)).toBeInTheDocument();
+  });
 
-    userEvent.click(aboutLink);
-
-    const teste = await screen.findByText('This application simulates a Pokédex, '
-      + 'a digital encyclopedia containing all Pokémons');
-    expect(teste).toBeDefined();
+  it('Teste se pág contém um h2 com o texto Page requested not found 😭.', async () => {
+    const history = createMemoryHistory();
+    history.push('/some/bad/route');
+    render(
+      <Router history={ history }>
+        <App />
+      </Router>,
+    );
+    const teste = await screen.getByRole('img', {
+      name: /Pikachu crying because the page requested was not found/i,
+    });
+    expect(teste.src).toContain('https://media.giphy.com/media/kNSeTs31XBZ3G/giphy.gif');
   });
 });
